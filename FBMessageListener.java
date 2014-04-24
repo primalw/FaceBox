@@ -102,6 +102,9 @@ public class FBMessageListener implements MessageListener, Runnable {
 							senderThread.interrupt();
 						}
 					}
+					else {
+						fOps.processMesg(FirstMessage);
+					}
 				}
 		 }
 		 catch(Exception ex) {

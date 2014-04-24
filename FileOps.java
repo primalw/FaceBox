@@ -124,6 +124,7 @@ class FileOps {
 			cp.data = names[i].getBytes();
 			
 			sender.sendMessage(Base64Coder.toString(cp));
+			System.out.println(names[i]);
 		}
 		
 		return names;
