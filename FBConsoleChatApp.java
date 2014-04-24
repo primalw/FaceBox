@@ -61,6 +61,7 @@ public class FBConsoleChatApp {
     public  PublicKey pkiPeerBA = null;
     
     public Boolean iAmSender3P = false;
+	public Boolean iAmSender2P = false;
 	
 	public FBConsoleChatApp(String username, String password) {
 		try {
@@ -226,7 +227,9 @@ public class FBConsoleChatApp {
         
     public void sendECDHkey2P() throws XMPPException, IOException {
      
-	  //System.out.println("My PublicKey BEFORE sending" + pk);
+	  //System.out.println("My PublicKey BEFORE sending" + pk);'
+	  
+	  iAmSender2P = true;
 	  
 	  getFriends();
 	  
