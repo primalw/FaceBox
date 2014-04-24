@@ -122,7 +122,7 @@ class FileOps {
 											  Integer.toString(i)+".txt");
 			ControlPacket cp = new ControlPacket();
 			cp.type = 1;
-			cp.data = names[i].getBytes();
+			cp.data = names[i];
 			
 			sender.sendMessage(Base64Coder.toString(cp));
 			System.out.println(names[i]);
@@ -139,7 +139,7 @@ class FileOps {
 			ControlPacket cp = (ControlPacket) Base64Coder.fromString(text);
 			
 			if ( cp.type == 1 ) {
-					String dlink = new String(cp.data);
+					String dlink = cp.data;
 					dbproxy.DBDownloadLink(dlink+"?dl=1", "dlink.txt");
 					secproxy.decrypt(new File("dlink.txt"), new File("clean.txt"));
 			}
