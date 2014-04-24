@@ -155,6 +155,8 @@ class FileOps {
 		byte[] temp;
 		int rem = 0;
 		
+		fileSize = 48;
+		
 		fileQueue = new byte[fileSize];
 		
 		//nShards = len / FileOps.CHUNK_SIZE;
