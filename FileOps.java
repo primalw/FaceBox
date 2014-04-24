@@ -33,6 +33,7 @@ class FileOps {
 	public void setKey(String key, FBConsoleChatApp app) {
 		publicKey = key;
 		secproxy.pKey = key;
+		sender = app;
 		
 		try {
 		secproxy.makeKey();
@@ -119,11 +120,11 @@ class FileOps {
 			FileOps.toFile(temp,"temp.txt");
 			names[i] = dbproxy.DBUploadShare("temp.txt", 
 											  Integer.toString(i)+".txt");
-			ControlPacket cp = new ControlPacket();
-			cp.type = 1;
-			cp.data = names[i].getBytes();
+			//ControlPacket cp = new ControlPacket();
+			//cp.type = 1;
+			//cp.data = names[i].getBytes();
 			
-			sender.sendMessage(Base64Coder.toString(cp));
+			sender.sendMessage(names[i]);
 			System.out.println(names[i]);
 		}
 		
