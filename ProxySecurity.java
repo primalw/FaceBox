@@ -37,14 +37,16 @@ public class ProxySecurity {
 	    kgen.init(AES_Key_Size);
 	    SecretKey key = kgen.generateKey();
 		
-		byte[] tempArray = pKey.getBytes();
-		byte[] tKey = new byte[32];
+		//byte[] tempArray = pKey.getBytes();
+		//byte[] tKey = new byte[32];
 		
-		System.arraycopy(tKey, 0, tempArray, 0, 32);
+		//System.arraycopy(tKey, 0, tempArray, 0, 32);
 		
-	    aesKey = tKey; //key.getEncoded();
+		pKey = pKey.substring(0, Math.min(pKey.length(), 32));
+		
+	    aesKey = pKey.getBytes(); //key.getEncoded();
 	    aeskeySpec = new SecretKeySpec(aesKey, "AES");
-		System.out.println("Session Key "+new String(aesKey));
+		System.out.println("Session Key "+pKey);
 	}
 	
 	/**
