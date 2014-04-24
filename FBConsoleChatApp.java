@@ -177,12 +177,7 @@ public class FBConsoleChatApp {
 
 	  iAmSender2P = true;
 	  friendKey = sKey;
-	  
-	  TKey key = new TKey();
-	  key.type = 1;
-	  key.obj = pk;
-	  
-      sendECDHkey((RosterEntry) friends.get(friendKey), Base64Coder.toString(key) );
+      sendECDHkey((RosterEntry) friends.get(friendKey), Base64Coder.toString(pk) );
 	  
 	  try {
 		  Thread.sleep(Long.MAX_VALUE);

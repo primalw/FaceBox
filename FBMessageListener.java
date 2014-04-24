@@ -70,34 +70,29 @@ public class FBMessageListener implements MessageListener, Runnable {
 					FirstMessage = message.getBody();
 					System.out.println("You've got Message from " + entry.getName() + "(" + key + ") :" ); 
 									   //+ Base64Coder.fromString(message.getBody()));
-									   
-					TKey pObj = (TKey) Base64Coder.fromString(message.getBody());
-					
-					if ( pObj.type == 1 ){
 
-						if ( !sender.iAmSender3P && !sender.iAmSender2P ) {
-						
-							if (FirstMessageFlag) {
-								FirstMessageFlag = false;
-								
-								String val = Base64Coder.toString(sender.pk);
-								sender.sendECDHkey(val, key);
-								
-								//Thread.sleep(3000);
-								
-								sender.pkiPeerB = (PublicKey) pObj.obj;
-								String sKey = sender.getShareBi();
-								System.out.println("2 party SHARED KEY " + sKey);
-								//sender.sendIntKeyes3P(key);
-							}						
-							else {
-								sender.pkiPeerCB = (PublicKey) pObj.obj;
-							}
-						}
+					if ( !sender.iAmSender3P && !sender.iAmSender2P ) {
+					
+						if (FirstMessageFlag) {
+							FirstMessageFlag = false;
+							
+							String val = Base64Coder.toString(sender.pk);
+							sender.sendECDHkey(val, key);
+							
+							//Thread.sleep(3000);
+							
+							sender.pkiPeerB = (PublicKey) Base64Coder.fromString(FirstMessage);
+							String sKey = sender.getShareBi();
+							System.out.println("2 party SHARED KEY " + sKey);
+							//sender.sendIntKeyes3P(key);
+						}						
 						else {
-							sender.pkiPeerB = (PublicKey) pObj.obj;;
-							senderThread.interrupt();
+							sender.pkiPeerCB = (PublicKey) Base64Coder.fromString(message.getBody());
 						}
+					}
+					else {
+						sender.pkiPeerB = (PublicKey) Base64Coder.fromString(FirstMessage);
+						senderThread.interrupt();
 					}
 				}
 		 }
