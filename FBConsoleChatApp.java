@@ -62,6 +62,7 @@ public class FBConsoleChatApp {
 	public FBConsoleChatApp(String username, String password) {
 		try {
 			connect();
+			
 			if (!login(username, password)) {
 				System.err.println("Access Denied...");
 				System.exit(-2);
@@ -105,6 +106,7 @@ public class FBConsoleChatApp {
    }
  
 	public boolean login(String userName, String password) throws XMPPException {
+
 		if ((connection != null) && (connection.isConnected())) {
 			connection.login(userName, password);
 			return true;
