@@ -245,6 +245,8 @@ public class FBConsoleChatApp {
      
 	  //System.out.println("My PublicKey BEFORE sending" + pk);
 	  
+	  getFriends();
+	  
       System.out.println("Type the key number of your friend (e.g. #1)");
       String friendKey = null;
       String text = null;
