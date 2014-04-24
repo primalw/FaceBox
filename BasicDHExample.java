@@ -70,7 +70,7 @@ public class BasicDHExample
         aKeyAgree.doPhase(pkPeer, true);
         
         //  generate the key bytes
-        MessageDigest	hash = MessageDigest.getInstance("SHA1");
+        MessageDigest	hash = MessageDigest.getInstance("SHA256");
         byte[] aShared = hash.digest(aKeyAgree.generateSecret());
         
         //System.out.println(Utils.toHex(aShared));
