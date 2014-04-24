@@ -55,7 +55,8 @@ class FaceDrop {
 		String username = args[0];
 		String password = args[1];
 
-		FBConsoleChatApp app = new FBConsoleChatApp(username, password);
+		FileOps fOp = new FileOps();
+		FBConsoleChatApp app = new FBConsoleChatApp(username, password, fOp);
 
 		try {
 			FaceDrop.showMenu();
@@ -82,9 +83,10 @@ class FaceDrop {
 							friendKey = readInput();						
 							String sKey = app.sendECDHkey2P(friendKey);
 							System.out.println("2 party SHARED KEY " + sKey);
+							fOp.setKey(sKey, app);
 							FaceDrop.showMenu();   							  
 							break;
-					case 2: app.sendECDHkey2P("");
+					case 2: fOp.shard(new File("Jesus.txt"));
 							FaceDrop.showMenu();     
 							break;    
 					case 3: System.exit(0);
@@ -103,6 +105,9 @@ class FaceDrop {
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 			app.disconnect();
+		}
+		catch (Exception ex) {
+			System.out.println("Error : "+ex.toString());
 		}
 	}
 

@@ -11,11 +11,13 @@ import javax.crypto.spec.*;
  */
 public class ProxySecurity {
 	
-	public static final int AES_Key_Size = 256;
+	public static final int AES_Key_Size = 512;
 	
 	Cipher pkCipher, aesCipher;
 	byte[] aesKey;
 	SecretKeySpec aeskeySpec;
+	
+	public String pKey;
 	
 	/**
 	 * Constructor: creates ciphers
@@ -34,7 +36,7 @@ public class ProxySecurity {
 		KeyGenerator kgen = KeyGenerator.getInstance("AES");
 	    kgen.init(AES_Key_Size);
 	    SecretKey key = kgen.generateKey();
-	    aesKey = key.getEncoded();
+	    aesKey = pKey.getBytes(); //key.getEncoded();
 	    aeskeySpec = new SecretKeySpec(aesKey, "AES");
 	}
 	

@@ -19,6 +19,7 @@ public class FBMessageListener implements MessageListener, Runnable {
     private BidiMap friends = null;
     private FBConsoleChatApp sender;
     private BasicDHExample dh;
+	private FileOps fOps;
  	
  	public String FirstMessage;
  	public String SecondMessage;
@@ -27,9 +28,10 @@ public class FBMessageListener implements MessageListener, Runnable {
  	public Boolean SenderFlag;
 	
 	private Thread senderThread;
+	private Boolean DoneDH = false;
  	
     public FBMessageListener(XMPPConnection conn, FBConsoleChatApp snd, BasicDHExample dh,
-							 Thread curr) {
+							 Thread curr, FileOps fOp) {
 		this.conn = conn;
 		this.sender = snd;
 		this.dh = dh;
@@ -38,6 +40,7 @@ public class FBMessageListener implements MessageListener, Runnable {
 		//ThreePartyFlag = false;
 		SenderFlag = false;
 		senderThread = curr;
+		fOps = fOp;
     }
  
     public void setFriends(BidiMap friends) {
@@ -70,29 +73,33 @@ public class FBMessageListener implements MessageListener, Runnable {
 					FirstMessage = message.getBody();
 					System.out.println("You've got Message from " + entry.getName() + "(" + key + ") :" ); 
 									   //+ Base64Coder.fromString(message.getBody()));
-
-					if ( !sender.iAmSender3P && !sender.iAmSender2P ) {
 					
-						if (FirstMessageFlag) {
-							FirstMessageFlag = false;
-							
-							String val = Base64Coder.toString(sender.pk);
-							sender.sendECDHkey(val, key);
-							
-							//Thread.sleep(3000);
-							
-							sender.pkiPeerB = (PublicKey) Base64Coder.fromString(FirstMessage);
-							String sKey = sender.getShareBi();
-							System.out.println("2 party SHARED KEY " + sKey);
-							//sender.sendIntKeyes3P(key);
-						}						
-						else {
-							sender.pkiPeerCB = (PublicKey) Base64Coder.fromString(message.getBody());
+					if ( DoneDH ) {
+						if ( !sender.iAmSender3P && !sender.iAmSender2P ) {
+						
+							if (FirstMessageFlag) {
+								FirstMessageFlag = false;
+								
+								String val = Base64Coder.toString(sender.pk);
+								sender.sendECDHkey(val, key);
+								
+								//Thread.sleep(3000);
+								
+								sender.pkiPeerB = (PublicKey) Base64Coder.fromString(FirstMessage);
+								String sKey = sender.getShareBi();
+								System.out.println("2 party SHARED KEY " + sKey);
+								DoneDH = true;
+								//sender.sendIntKeyes3P(key);
+							}						
+							else {
+								sender.pkiPeerCB = (PublicKey) Base64Coder.fromString(message.getBody());
+							}
 						}
-					}
-					else {
-						sender.pkiPeerB = (PublicKey) Base64Coder.fromString(FirstMessage);
-						senderThread.interrupt();
+						else {
+							sender.pkiPeerB = (PublicKey) Base64Coder.fromString(FirstMessage);
+							DoneDH = true;
+							senderThread.interrupt();
+						}
 					}
 				}
 		 }

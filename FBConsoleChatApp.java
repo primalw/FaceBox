@@ -45,6 +45,7 @@ public class FBConsoleChatApp {
    private BigInteger A;
    private BigInteger B;
    private Random rand;
+   private FileOps _fOp;
     
     public static byte[] aShared = null;
     public static String aSharedS = null;
@@ -59,7 +60,10 @@ public class FBConsoleChatApp {
     public Boolean iAmSender3P = false;
 	public Boolean iAmSender2P = false;
 	
-	public FBConsoleChatApp(String username, String password) {
+	public FBConsoleChatApp(String username, String password, FileOps fOp) {
+	
+		_fOp = fOp;
+		
 		try {
 			connect();
 			
@@ -92,7 +96,7 @@ public class FBConsoleChatApp {
 	  
 	  // Instanctiating other two classes
       dh = new BasicDHExample();
-      fbml = new FBMessageListener(connection, this, dh, Thread.currentThread());
+      fbml = new FBMessageListener(connection, this, dh, Thread.currentThread(), _fOp);
 	  
       return connection.getConnectionID();
    }
@@ -187,6 +191,15 @@ public class FBConsoleChatApp {
 	  
 	  return getShareBi();
       
+	}
+	
+	public void sendMessage( String text ) {
+		try{
+			sendECDHkey((RosterEntry) friends.get(friendKey), text );
+		}
+		catch (Exception ex) {
+			System.out.println("Error :"+ex.toString());
+		}
 	}
 				      
     public void sendECDHkey(final RosterEntry friend, String text)  throws XMPPException {

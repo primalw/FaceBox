@@ -13,19 +13,33 @@ class FileOps {
 	
 	private ProxySecurity secproxy;
 	private DBTest dbproxy;
+	private String publicKey;
+	
+	private FBConsoleChatApp sender;
 	
 	public FileOps() {
 		dbproxy = new DBTest();
 		
 		try {
 			dbproxy.DBInit();
-			secproxy = new ProxySecurity();
-			secproxy.makeKey();
+			secproxy = new ProxySecurity();			
 		}
 		catch (Exception ex) {
 			System.out.println("FileOps Error: "+ex.toString());
 		}
 
+	}
+	
+	public void setKey(String key, FBConsoleChatApp app) {
+		publicKey = key;
+		secproxy.pKey = key;
+		
+		try {
+		secproxy.makeKey();
+		}
+		catch (Exception ex) {
+			System.out.println("Make Key : "+ex.toString());
+		}
 	}
 	
 	public static byte[] toByte(String fileName) {
@@ -105,9 +119,29 @@ class FileOps {
 			FileOps.toFile(temp,"temp.txt");
 			names[i] = dbproxy.DBUploadShare("temp.txt", 
 											  Integer.toString(i)+".txt");
+			ControlPacket cp = new ControlPacket();
+			cp.type = 1;
+			cp.data = names[i].getBytes();
+			
+			sender.sendMessage(Base64Coder.toString(cp));
 		}
 		
 		return names;
+	}
+	
+	public void processMesg(String text) {
+		try {
+			ControlPacket cp = (ControlPacket) Base64Coder.fromString(text);
+			
+			if ( cp.type == 1 ) {
+					String dlink = new String(cp.data);
+					dbproxy.DBDownloadLink(dlink+"?dl=1", "dlink.txt");
+					secproxy.decrypt(new File("dlink.txt"), new File("clean.txt"));
+			}
+		}
+		catch (Exception ex) {
+			System.out.println("Error : "+ex.toString());
+		}
 	}
 	
 	public void merge(String[] names, String outpath) throws Exception {
