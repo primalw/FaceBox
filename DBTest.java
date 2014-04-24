@@ -117,18 +117,59 @@ public class DBTest {
 		
 		return ret;
 	}
+	
+	public boolean DBDelete(String path) {
+		
+		try {
+			client.delete("/"+path);
+			return true;
+		}
+		catch (Exception ex) {
+			System.out.println("Error : Delete " + ex.toString() );
+			return false;
+		}
+	}
 
-    public static void main(String[] args) throws IOException, DbxException {	
+	public String DBUploadShare(String src, String dst) {
+		
+		try {
+			DBUpload(src, dst);
+			return DBCreateLink(dst);
+		}
+		catch (Exception ex) {
+			System.out.println("Error UploadShare : " + ex.toString());
+		}
+	
+		return null;
+	}
+	
+    /*public static void main(String[] args) {	
 		String sLink;
 		DBTest dbproxy = new DBTest();
-		dbproxy.DBInit();
-		
-		dbproxy.DBUpload( "magnum-opus.txt", "magnum-opus.txt" );
-		//dbproxy.DBDownload( "magnum-opus.txt", "working-draft-1.txt" );
-		
-		sLink = dbproxy.DBCreateLink("magnum-opus.txt");
-		System.out.println(sLink);
-		
-		dbproxy.DBDownloadLink(sLink+"?dl=1", "dlink.txt");
-    }
+		try {
+			ProxySecurity secproxy = new ProxySecurity();
+			
+			dbproxy.DBInit();
+			secproxy.makeKey();
+
+			secproxy.encrypt(new File("magnum-opus.txt") , new File("enc.txt") );
+			System.out.println("Thank You Jesus");
+			
+			dbproxy.DBUpload("enc.txt", "magnum-opus.txt" );
+			//dbproxy.DBDownload( "magnum-opus.txt", "working-draft-1.txt" );
+			
+			sLink = dbproxy.DBCreateLink("magnum-opus.txt");
+			System.out.println(sLink);
+			
+			dbproxy.DBDownloadLink(sLink+"?dl=1", "dlink.txt");
+			
+			secproxy.decrypt(new File("dlink.txt") , new File("plain-out.txt") );
+			
+			dbproxy.DBDelete("magnum-opus.txt");
+			//secproxy.decrypt(new File("enc.txt") , new File("enc-out.txt") );
+		}
+		catch ( Exception ex ) {
+			System.out.println("Error : " + ex.toString() );
+		}
+    }*/
 }

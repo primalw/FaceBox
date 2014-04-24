@@ -20,7 +20,7 @@ public class ProxySecurity {
 	/**
 	 * Constructor: creates ciphers
 	 */
-	public void FileEncryption() throws GeneralSecurityException {
+	public ProxySecurity() throws GeneralSecurityException {
 		// create RSA public key cipher
 		pkCipher = Cipher.getInstance("RSA");
 	    // create AES shared key cipher
@@ -84,13 +84,28 @@ public class ProxySecurity {
 	 */
 	public void encrypt(File in, File out) throws IOException, InvalidKeyException {
 		aesCipher.init(Cipher.ENCRYPT_MODE, aeskeySpec);
-		
 		FileInputStream is = new FileInputStream(in);
+		System.out.println("Thank You Jesus");
 		CipherOutputStream os = new CipherOutputStream(new FileOutputStream(out), aesCipher);
 		
 		copy(is, os);
-		
 		os.close();
+	}
+	
+	/**
+	 * Encrypts and then copies the contents of a given file to a byte array.
+	 */
+	public byte[] encrypt(File in) throws IOException, InvalidKeyException {
+		aesCipher.init(Cipher.ENCRYPT_MODE, aeskeySpec);
+		FileInputStream is = new FileInputStream(in);
+		ByteArrayOutputStream b = new ByteArrayOutputStream();
+		System.out.println("Thank You Jesus");
+		CipherOutputStream os = new CipherOutputStream(b, aesCipher);
+		
+		copy(is, os);
+		os.close();
+		
+		return b.toByteArray();
 	}
 	
 	/**
@@ -100,6 +115,21 @@ public class ProxySecurity {
 		aesCipher.init(Cipher.DECRYPT_MODE, aeskeySpec);
 		
 		CipherInputStream is = new CipherInputStream(new FileInputStream(in), aesCipher);
+		FileOutputStream os = new FileOutputStream(out);
+		
+		copy(is, os);
+		
+		is.close();
+		os.close();
+	}
+	
+	/**
+	 * Decrypts and then copies the contents of a given file.
+	 */
+	public void decrypt(byte[] in, File out) throws IOException, InvalidKeyException {
+		aesCipher.init(Cipher.DECRYPT_MODE, aeskeySpec);
+		
+		CipherInputStream is = new CipherInputStream(new ByteArrayInputStream(in), aesCipher);
 		FileOutputStream os = new FileOutputStream(out);
 		
 		copy(is, os);
