@@ -140,7 +140,7 @@ class FileOps {
 			//ControlPacket cp = (ControlPacket) Base64Coder.fromString(text);
 			
 			//if ( cp.type == 1 ) {
-					names[1] = text;
+					names[0] = text;
 					merge(names, "clean.txt");
 			//}
 		}
