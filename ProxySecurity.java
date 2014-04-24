@@ -44,6 +44,7 @@ public class ProxySecurity {
 		
 	    aesKey = tKey; //key.getEncoded();
 	    aeskeySpec = new SecretKeySpec(aesKey, "AES");
+		System.out.println("Session Key "+new String(aesKey));
 	}
 	
 	/**
