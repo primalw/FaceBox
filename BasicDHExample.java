@@ -31,6 +31,7 @@ public class BasicDHExample
     private KeyAgreement aKeyAgree;
     private KeyPair      aPair;
     private KeyPairGenerator keyGen;
+	private String pKey;
     
     public BigInteger x;
 
@@ -74,7 +75,8 @@ public class BasicDHExample
         
         //System.out.println(Utils.toHex(aShared));
         //byte[] aShared = aKeyAgree.generateSecret();
-        return Utils.toHex(aShared);
+		pKey = Utils.toHex(aShared);
+        return pKey;
     }
     
     public String getPeerKey(PublicKey pkPeerB, PublicKey pkPeerC) throws Exception {

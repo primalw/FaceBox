@@ -25,8 +25,11 @@ public class FBMessageListener implements MessageListener, Runnable {
  	public Boolean FirstMessageFlag;
  	public Boolean ThreePartyFlag;
  	public Boolean SenderFlag;
+	
+	private Thread senderThread;
  	
-    public FBMessageListener(XMPPConnection conn, FBConsoleChatApp snd, BasicDHExample dh) {
+    public FBMessageListener(XMPPConnection conn, FBConsoleChatApp snd, BasicDHExample dh,
+							 Thread curr) {
 		this.conn = conn;
 		this.sender = snd;
 		this.dh = dh;
@@ -34,6 +37,7 @@ public class FBMessageListener implements MessageListener, Runnable {
 		FirstMessageFlag = true;
 		//ThreePartyFlag = false;
 		SenderFlag = false;
+		senderThread = curr;
     }
  
     public void setFriends(BidiMap friends) {
@@ -88,21 +92,8 @@ public class FBMessageListener implements MessageListener, Runnable {
 					}
 					else {
 						sender.pkiPeerB = (PublicKey) Base64Coder.fromString(FirstMessage);
-						sender.getShareBi();
+						senderThread.interrupt();
 					}
-
-					
-								
-					/*if ((sender.iAmSender3P) && (SenderFlag)) {
-						//System.out.println("DEBUG 1");	
-						SecondMessage = message.getBody();
-					}
-					
-					if (sender.iAmSender3P) {
-						//System.out.println("DEBUG 2");
-						SenderFlag = !SenderFlag;
-					}*/
-
 				}
 		 }
 		 catch(Exception ex) {
