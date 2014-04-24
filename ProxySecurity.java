@@ -36,7 +36,13 @@ public class ProxySecurity {
 		KeyGenerator kgen = KeyGenerator.getInstance("AES");
 	    kgen.init(AES_Key_Size);
 	    SecretKey key = kgen.generateKey();
-	    aesKey = pKey.getBytes(); //key.getEncoded();
+		
+		byte[] tempArray = pKey.getBytes();
+		byte[] tKey = new byte[32];
+		
+		System.arraycopy(tKey, 0, tempArray, 0, 32);
+		
+	    aesKey = tKey; //key.getEncoded();
 	    aeskeySpec = new SecretKeySpec(aesKey, "AES");
 	}
 	
