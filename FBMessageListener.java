@@ -79,11 +79,11 @@ public class FBMessageListener implements MessageListener, Runnable {
 							String val = Base64Coder.toString(sender.pk);
 							sender.sendECDHkey(val, key);
 							
-							Thread.sleep(3000);
+							//Thread.sleep(3000);
 							
 							sender.pkiPeerB = (PublicKey) Base64Coder.fromString(FirstMessage);
-							sender.getShareBi();
-							
+							String sKey = sender.getShareBi();
+							System.out.println("2 party SHARED KEY " + sKey);
 							//sender.sendIntKeyes3P(key);
 						}						
 						else {
