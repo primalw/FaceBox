@@ -243,12 +243,12 @@ public class FBConsoleChatApp {
       
       sendECDHkey((RosterEntry) friends.get(friendKey), Base64Coder.toString(pk) );
       
-      try {
+      /*try {
 		  pkiPeerB = (PublicKey) Base64Coder.fromString(fbml.retrieveFirstMessage());
 	  }
 	  catch (Exception e){
 		  System.out.println("Send Public : "+e.toString());
-	  }
+	  }*/
       	 
       //fbml.DHKeySentFlag3P = true;
     }
