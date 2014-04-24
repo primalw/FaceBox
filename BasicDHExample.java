@@ -37,29 +37,30 @@ public class BasicDHExample
     public PublicKey dhInit() 
     {
     	try{
-        DHParameterSpec	dhParams = new DHParameterSpec(p512, g512);
-        keyGen = KeyPairGenerator.getInstance("DH");
-        SecureRandom random = new SecureRandom();
-        keyGen.initialize(dhParams);
+			DHParameterSpec	dhParams = new DHParameterSpec(p512, g512);
+			keyGen = KeyPairGenerator.getInstance("DH");
+			SecureRandom random = new SecureRandom();
+			keyGen.initialize(dhParams);
 
-        // set up
-        aKeyAgree = KeyAgreement.getInstance("DH");
-        aPair = keyGen.generateKeyPair();
-        
-        // two party agreement
-        PublicKey pk = aPair.getPublic();
-        //PrivateKey pkP = aPair.getPrivate();
-        
-        aKeyAgree.init(aPair.getPrivate());
-        
-        x = ((javax.crypto.interfaces.DHPrivateKey) aPair.getPrivate()).getX();
- 		BigInteger y = ((javax.crypto.interfaces.DHPublicKey) aPair.getPublic()).getY();
- 
-        return pk;        
+			// set up
+			aKeyAgree = KeyAgreement.getInstance("DH");
+			aPair = keyGen.generateKeyPair();
+			
+			// two party agreement
+			PublicKey pk = aPair.getPublic();
+			//PrivateKey pkP = aPair.getPrivate();
+			
+			aKeyAgree.init(aPair.getPrivate());
+			
+			x = ((javax.crypto.interfaces.DHPrivateKey) aPair.getPrivate()).getX();
+			BigInteger y = ((javax.crypto.interfaces.DHPublicKey) aPair.getPublic()).getY();
+	 
+			return pk;        
         } 
         
         catch(Exception e) {
-        return null;
+			System.out.println("Public Key Error "+e.toString());
+			return null;
         }
     }
     
@@ -92,46 +93,4 @@ public class BasicDHExample
         
         return ac;
     }
-    
-    
-	/*public static String savePublicKey(PublicKey publ) throws GeneralSecurityException {
-    	KeyFactory fact = KeyFactory.getInstance("DH");
-    	X509EncodedKeySpec spec = fact.getKeySpec(publ,
-        X509EncodedKeySpec.class);
-		return Base64.encodeBase64(spec.getEncoded());	
-		}
-	   
-	public static PublicKey loadPublicKey(String stored) throws GeneralSecurityException {
-    	byte[] data = base64Decode(stored);
-    	X509EncodedKeySpec spec = new X509EncodedKeySpec(data);
-    	KeyFactory fact = KeyFactory.getInstance("DH");
-    	return fact.generatePublic(spec);
-	}
-
-    public static PublicKey stringToPublicKey(String s) {
-
-    	BASE64Decoder decoder = new BASE64Decoder();
-
-    	byte[] c = null;
-    	KeyFactory keyFact = null;
-    	PublicKey returnKey = null;
-
-    	try {
-        	c = decoder.decodeBuffer(s);
-        	keyFact = KeyFactory.getInstance("DH");
-    	} catch (Exception e) {
-        	System.out.println("Error in Keygen");
-        	e.printStackTrace();
-    	}	
-
-   		X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(c);
-    	try {
-        	returnKey = keyGen.generatePublic(x509KeySpec);
-    	} catch (Exception e) {
-
-        	System.out.println("Error in Keygen2");
-        	e.printStackTrace();
-    	}
-    	return returnKey; 
-	}*/
 }

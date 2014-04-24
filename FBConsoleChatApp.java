@@ -31,7 +31,7 @@ import javax.crypto.*;
 public class FBConsoleChatApp {
  
    public static final String FB_XMPP_HOST = "chat.facebook.com";
-   public static int FB_XMPP_PORT = 5222;
+   public static final int FB_XMPP_PORT = 5222;
  
    private ConnectionConfiguration config;
    private XMPPConnection connection;
@@ -61,18 +61,41 @@ public class FBConsoleChatApp {
     public  PublicKey pkiPeerBA = null;
     
     public Boolean iAmSender3P = false;
+	
+	public FBConsoleChatApp(String username, String password) {
+		try {
+			connect();
+			if (!login(username, password)) {
+				System.err.println("Access Denied...");
+				System.exit(-2);
+			}
+			
+			initialSetup();	
+			getFriends();	
+		}
+		catch (Exception ex) {
+			System.out.println("FBChatSender error : "+ex.toString());
+		}
+		
+	}
  
    public String connect() throws XMPPException {
+   
 	  System.out.println("Connecting ..."+FB_XMPP_PORT);
-      config = new ConnectionConfiguration(FB_XMPP_HOST, FB_XMPP_PORT);
+	  
+	  // Setting up the security environment
+      config = new ConnectionConfiguration(FB_XMPP_HOST, FB_XMPP_PORT);	  
       SASLAuthentication.registerSASLMechanism("DIGEST-MD5"
-        , CustomSASLDigestMD5Mechanism.class);
+							,CustomSASLDigestMD5Mechanism.class);							
       config.setSASLAuthenticationEnabled(true);
       config.setDebuggerEnabled(false);
       connection = new XMPPConnection(config);
       connection.connect();   
+	  
+	  // Instanctiating other two classes
       dh = new BasicDHExample();
       fbml = new FBMessageListener(connection, this, dh);
+	  
       return connection.getConnectionID();
    }
  
@@ -84,14 +107,14 @@ public class FBConsoleChatApp {
       }
    }
  
-   public boolean login(String userName, String password) 
-     throws XMPPException {
-      if ((connection != null) && (connection.isConnected())) {
-         connection.login(userName, password);
-         return true;
-      }
-      return false;
-   }
+	public boolean login(String userName, String password) throws XMPPException {
+		if ((connection != null) && (connection.isConnected())) {
+			connection.login(userName, password);
+			return true;
+		}
+
+		return false;
+	}
  
    public String readInput() throws IOException {
       BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -130,32 +153,6 @@ public class FBConsoleChatApp {
          }
          fbml.setFriends(friends);
  	     
- 	     try {
-			 // 2 parties
-			 //PublicKey pkiPeer = (PublicKey) Base64Coder.fromString(fbml.retrieveFirstMessage());
-			 //System.out.println("PEER KEY" + pkiPeer.toString());
-			 String pkiShared = dh.getPeerKey(pkiPeerB);
-			 System.out.println("2 party SHARED KEY " + pkiShared);
-			 //System.out.println("MY public KEY" + Base64Coder.toString(pk));
- 	     }
- 	     catch (Exception e) {}
- 	     
- 	     
- 	     try {
- 	     if (pkiPeerB !=null){
- 	     	 System.out.println("Public key A  " + pk);
- 	     	 System.out.println("Public key B  " + pkiPeerB);
- 	     	 //System.out.println("Public key C  " + pkiPeerC);
- 	     	 //if (pkiPeerAC !=null) {System.out.println("Public key Interim  AC " + pkiPeerAC);}
- 	     	 //if (pkiPeerCB !=null) {System.out.println("Public key Interim CB " + pkiPeerCB);}
- 	     	 //if (pkiPeerBA !=null) {System.out.println("Public key Interim BA  " + pkiPeerBA);}
-			 String pkiSharedABC = dh.getPeerKey(pkiPeerCB);
-			 System.out.println("3 party SHARED KEY " + pkiSharedABC);
-		 }
-		 
-		 
-		  }
- 	     catch (Exception e) {}
 		 //TEST
  	     
  	     /*if (Base64Coder.fromString(Base64Coder.toString(pk)) != null)
@@ -174,7 +171,45 @@ public class FBConsoleChatApp {
  	     */
       }
    }
+   
+   public String getShareBi() {
+	   try {
+		   // 2 parties
+		   //PublicKey pkiPeer = (PublicKey) Base64Coder.fromString(fbml.retrieveFirstMessage());
+		   //System.out.println("PEER KEY" + pkiPeer.toString());
+		   String pkiShared = dh.getPeerKey(pkiPeerB);
+		   System.out.println("2 party SHARED KEY " + pkiShared);
+		   //System.out.println("MY public KEY" + Base64Coder.toString(pk));
+		   return pkiShared;
+	   }
+	   catch (Exception e) {
+		   System.out.println("Get Shared : "+e.toString());
+		   return null;
+	   }
+   }
  
+    public String getShareTri() {
+		try {
+			if (pkiPeerB !=null){
+				System.out.println("Public key A  " + pk);
+				System.out.println("Public key B  " + pkiPeerB);
+				//System.out.println("Public key C  " + pkiPeerC);
+				//if (pkiPeerAC !=null) {System.out.println("Public key Interim  AC " + pkiPeerAC);}
+				//if (pkiPeerCB !=null) {System.out.println("Public key Interim CB " + pkiPeerCB);}
+				//if (pkiPeerBA !=null) {System.out.println("Public key Interim BA  " + pkiPeerBA);}
+				String pkiSharedABC = dh.getPeerKey(pkiPeerCB);
+				System.out.println("3 party SHARED KEY " + pkiSharedABC);
+				return pkiSharedABC;
+			}						
+		}
+		catch (Exception e) 
+		{
+			System.out.println("GetSharedTri : "+e.toString());
+		}
+		
+		return null;
+	}
+	
    public void sendMessage() throws XMPPException
      , IOException {
      
@@ -206,8 +241,7 @@ public class FBConsoleChatApp {
    	  sendECDHkey((RosterEntry) friends.get(key), text);
    }
         
-    public void sendECDHkey2P() throws XMPPException
-     , IOException {
+    public void sendECDHkey2P() throws XMPPException, IOException {
      
 	  //System.out.println("My PublicKey BEFORE sending" + pk);
 	  
@@ -222,20 +256,25 @@ public class FBConsoleChatApp {
       sendECDHkey((RosterEntry) friends.get(friendKey), Base64Coder.toString(pk) );
       
       try {
-      	pkiPeerB = (PublicKey) Base64Coder.fromString(fbml.retrieveFirstMessage());
-      	}
-      	 catch (Exception e) {}
+		  pkiPeerB = (PublicKey) Base64Coder.fromString(fbml.retrieveFirstMessage());
+	  }
+	  catch (Exception e){
+		  System.out.println("Send Public : "+e.toString());
+	  }
       	 
       //fbml.DHKeySentFlag3P = true;
     }
     
     public void sendIntKeyes3P(String key) throws Exception
     {
-		if (pkiPeerBA == null) {pkiPeerBA = (PublicKey) dh.getIntermKey(pkiPeerB);}		
-			System.out.println("Sending Interm Key ba to a ");		
+		if (pkiPeerBA == null) {
 			pkiPeerBA = (PublicKey) dh.getIntermKey(pkiPeerB);
-			sendECDHkey(Base64Coder.toString(pkiPeerBA), key);
-			System.out.println("DEtails " + pkiPeerBA + key);	
+		}		
+		
+		System.out.println("Sending Interm Key ba to a ");		
+		pkiPeerBA = (PublicKey) dh.getIntermKey(pkiPeerB);
+		sendECDHkey(Base64Coder.toString(pkiPeerBA), key);
+		System.out.println("DEtails " + pkiPeerBA + key);	
     }
     
     public void sendECDHkey3P() throws XMPPException
@@ -312,8 +351,7 @@ public class FBConsoleChatApp {
     }
     
 				      
-    public void sendECDHkey(final RosterEntry friend, String text) 
-     throws XMPPException {
+    public void sendECDHkey(final RosterEntry friend, String text)  throws XMPPException {
       if ((connection != null) && (connection.isConnected())) {
          ChatManager chatManager = connection.getChatManager();
          Chat chat = chatManager.createChat(friend.getUser(), fbml);
@@ -332,20 +370,10 @@ public class FBConsoleChatApp {
       String username = args[0];
       String password = args[1];
 	  
-	  if ( args.length == 3 ) {
-		  FB_XMPP_PORT =  Integer.parseInt(args[2]);
-	  }
-	  
- 
-      FBConsoleChatApp app = new FBConsoleChatApp();
+      FBConsoleChatApp app = new FBConsoleChatApp(username, password);
       
       try {
-         app.connect();
-         if (!app.login(username, password)) {
-            System.err.println("Access Denied...");
-            System.exit(-2);
-         }
-         
+                 
          app.showMenu();
          String data = null;
          menu:
@@ -363,7 +391,7 @@ public class FBConsoleChatApp {
             }
 
             switch (choice) {
-			   case 0: app.initialSetup();
+			   /*case 0: app.initialSetup();
                        app.showMenu();
                        continue menu;
                case 1: app.getFriends();
@@ -371,7 +399,7 @@ public class FBConsoleChatApp {
                        continue menu;
                case 2: app.sendMessage();
                        app.showMenu();
-                       continue menu;
+                       continue menu;*/
 			   case 3: app.sendECDHkey2P();
                        app.showMenu();     
                        continue menu; 
