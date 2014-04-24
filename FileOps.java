@@ -169,6 +169,7 @@ class FileOps {
 		
 			String data[] = names[0].split("-");
 			fileQueue = new byte[Integer.parseInt(data[1])];
+			fileSize = Integer.parseInt(data[1]);
 			
 			dbproxy.DBDownloadLink(data[0]+"?dl=1", "dlink.txt");
 			
