@@ -142,7 +142,7 @@ class FileOps {
 			
 			//if ( cp.type == 1 ) {
 					names[0] = text;
-					merge(names, "clean.txt");
+					merge(names, "dropbin/clean.txt");
 			//}
 		}
 		catch (Exception ex) {

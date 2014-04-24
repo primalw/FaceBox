@@ -86,7 +86,10 @@ class FaceDrop {
 							fOp.setKey(sKey, app);
 							FaceDrop.showMenu();   							  
 							break;
-					case 2: fOp.shard(new File("Jesus.txt"));
+					case 2: 
+							System.out.println("Type file name ...");
+							String fName = readInput();						
+							fOp.shard(new File(fName));
 							FaceDrop.showMenu();     
 							break;    
 					case 3: System.exit(0);
