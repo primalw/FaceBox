@@ -128,7 +128,7 @@ class FileOps {
 				cp.data = names[i];
 			}*/
 			
-			sender.sendMessage(names[i]+":"+Integer.toString(rem));
+			sender.sendMessage(names[i]+"-"+Integer.toString(rem));
 			System.out.println(names[i]);
 		}
 		
@@ -167,7 +167,7 @@ class FileOps {
 		
 		for (int i = 0; i < nShards ; i++ ) {
 		
-			String data[] = names[0].split(":");
+			String data[] = names[0].split("-");
 			fileQueue = new byte[Integer.parseInt(data[1])];
 			
 			dbproxy.DBDownloadLink(data[0]+"?dl=1", "dlink.txt");
