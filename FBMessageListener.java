@@ -88,7 +88,7 @@ public class FBMessageListener implements MessageListener, Runnable {
 								
 								sender.pkiPeerB = (PublicKey) Base64Coder.fromString(FirstMessage);
 								String sKey = sender.getShareBi();
-								System.out.println("2 party SHARED KEY " + sKey);
+								//System.out.println("2 party SHARED KEY " + sKey);
 								fOps.setKey(sKey, sender);
 								DoneDH = true;
 								//sender.sendIntKeyes3P(key);
