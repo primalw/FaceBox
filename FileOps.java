@@ -120,11 +120,11 @@ class FileOps {
 			FileOps.toFile(temp,"temp.txt");
 			names[i] = dbproxy.DBUploadShare("temp.txt", 
 											  Integer.toString(i)+".txt");
-			//ControlPacket cp = new ControlPacket();
-			//cp.type = 1;
-			//cp.data = names[i].getBytes();
+			ControlPacket cp = new ControlPacket();
+			cp.type = 1;
+			cp.data = names[i].getBytes();
 			
-			sender.sendMessage(names[i]);
+			sender.sendMessage(Base64Coder.toString(cp));
 			System.out.println(names[i]);
 		}
 		
