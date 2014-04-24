@@ -75,6 +75,7 @@ public class FBMessageListener implements MessageListener, Runnable {
 									   //+ Base64Coder.fromString(message.getBody()));
 					
 					if ( !DoneDH ) {
+						DoneDH = true;
 						if ( !sender.iAmSender3P && !sender.iAmSender2P ) {
 						
 							if (FirstMessageFlag) {

@@ -133,6 +133,9 @@ class FileOps {
 	
 	public void processMesg(String text) {
 		try {
+			System.out.println("Thank You Jesus");
+			System.out.println(text);
+			
 			ControlPacket cp = (ControlPacket) Base64Coder.fromString(text);
 			
 			if ( cp.type == 1 ) {
