@@ -69,7 +69,7 @@ class FaceDrop {
 				}
 				int choice = Integer.parseInt(data);
 				if ((choice != 0) && (choice != 1) && (choice != 2) && (choice != 3) && (choice != 4) && (choice != 5)) {
-					System.out.println("Invalid input.Only 0-5 is allowed !");
+					System.out.println("Invalid input.Only 1-3 is allowed !");
 					FaceDrop.showMenu();
 					continue;
 				}

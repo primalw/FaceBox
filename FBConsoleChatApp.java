@@ -47,7 +47,7 @@ public class FBConsoleChatApp {
    private Random rand;
     
     public static byte[] aShared = null;
-    public static String aSharedS = "No";
+    public static String aSharedS = null;
     public static PublicKey pk;
     
     public  PublicKey pkiPeerB = null;
@@ -143,10 +143,10 @@ public class FBConsoleChatApp {
 		   // 2 parties
 		   //PublicKey pkiPeer = (PublicKey) Base64Coder.fromString(fbml.retrieveFirstMessage());
 		   //System.out.println("PEER KEY" + pkiPeer.toString());
-		   String pkiShared = dh.getPeerKey(pkiPeerB);
+		   aSharedS = dh.getPeerKey(pkiPeerB);
 		   //System.out.println("2 party SHARED KEY " + pkiShared);
 		   //System.out.println("MY public KEY" + Base64Coder.toString(pk));
-		   return pkiShared;
+		   return aSharedS;
 	   }
 	   catch (Exception e) {
 		   System.out.println("Get Shared : "+e.toString());
@@ -177,7 +177,12 @@ public class FBConsoleChatApp {
 
 	  iAmSender2P = true;
 	  friendKey = sKey;
-      sendECDHkey((RosterEntry) friends.get(friendKey), Base64Coder.toString(pk) );
+	  
+	  TKey key = new TKey();
+	  key.type = 1;
+	  key.obj = pk;
+	  
+      sendECDHkey((RosterEntry) friends.get(friendKey), Base64Coder.toString(key) );
 	  
 	  try {
 		  Thread.sleep(Long.MAX_VALUE);
