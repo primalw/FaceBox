@@ -64,8 +64,8 @@ public class FBMessageListener implements MessageListener, Runnable {
 				if ((message != null) && (message.getBody() != null)) {
 
 					FirstMessage = message.getBody();
-					System.out.println("You've got Message from " + entry.getName() + "(" + key + ") :" 
-									   + Base64Coder.fromString(message.getBody()));
+					System.out.println("You've got Message from " + entry.getName() + "(" + key + ") :" ); 
+									   //+ Base64Coder.fromString(message.getBody()));
 
 					if ( !sender.iAmSender3P && !sender.iAmSender2P ) {
 					
