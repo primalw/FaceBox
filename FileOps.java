@@ -100,7 +100,7 @@ class FileOps {
 		int len = 0;
 		int nShards = 0;
 		String[] names = null;
-		byte[] temp = new byte[FileOps.CHUNK_SIZE];
+		byte[] temp ; //= new byte[FileOps.CHUNK_SIZE];
 		int rem = 0;
 		
 		fileQueue = secproxy.encrypt(in);
@@ -116,6 +116,7 @@ class FileOps {
 				FileOps.CHUNK_SIZE : len - ( (i-1) * FileOps.CHUNK_SIZE + FileOps.CHUNK_SIZE ) ;
 			
 			System.out.println(rem);
+			temp = new byte[rem];
 			System.arraycopy(fileQueue, i * FileOps.CHUNK_SIZE, temp, 0, rem);
 			FileOps.toFile(temp,"temp.txt");
 			names[i] = dbproxy.DBUploadShare("temp.txt", 
@@ -133,7 +134,6 @@ class FileOps {
 	
 	public void processMesg(String text) {
 		try {
-			System.out.println("Thank You Jesus");
 			System.out.println(text);
 			String[] names = new String[1];
 			
