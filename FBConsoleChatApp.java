@@ -123,9 +123,9 @@ public class FBConsoleChatApp {
  
    public void showMenu() {
       System.out.println("Please select one of the following menu.");
-	  System.out.println("0. Initial Setup");
+	  /*System.out.println("0. Initial Setup");
       System.out.println("1. List of Friends online");
-      System.out.println("2. Send Message");
+      System.out.println("2. Send Message");*/
       System.out.println("3. Initiate key exchange for 2 Parties");
       System.out.println("4. Initiate key exchange for 3 Parties");
       System.out.println("5. EXIT");
@@ -152,23 +152,6 @@ public class FBConsoleChatApp {
             }
          }
          fbml.setFriends(friends);
- 	     
-		 //TEST
- 	     
- 	     /*if (Base64Coder.fromString(Base64Coder.toString(pk)) != null)
- 	     {
- 	     System.out.println("TEST");
- 	     System.out.println(Base64Coder.fromString(Base64Coder.toString(pk)));
- 	     }
- 	     else
- 	     {
- 	     System.out.println("BLYAD'");
- 	     }
-
- 	     //System.out.println(dh.stringToPublicKey(fbml.retrieveFirstMessage()));
- 	     //dh.getPeerKey(fbml.retrieveFirstMessage());
- 	     }
- 	     */
       }
    }
    
