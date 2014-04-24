@@ -67,7 +67,7 @@ public class FBMessageListener implements MessageListener, Runnable {
 					System.out.println("You've got Message from " + entry.getName() + "(" + key + ") :" 
 									   + Base64Coder.fromString(message.getBody()));
 
-					if ( !sender.iAmSender3P || !sender.iAmSender2P ) {
+					if ( !sender.iAmSender3P && !sender.iAmSender2P ) {
 					
 						if (FirstMessageFlag) {
 							FirstMessageFlag = false;
@@ -86,6 +86,12 @@ public class FBMessageListener implements MessageListener, Runnable {
 							sender.pkiPeerCB = (PublicKey) Base64Coder.fromString(message.getBody());
 						}
 					}
+					else {
+						sender.pkiPeerB = (PublicKey) Base64Coder.fromString(FirstMessage);
+						sender.getShareBi();
+					}
+
+					
 								
 					/*if ((sender.iAmSender3P) && (SenderFlag)) {
 						//System.out.println("DEBUG 1");	
