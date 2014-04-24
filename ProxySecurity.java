@@ -96,7 +96,7 @@ public class ProxySecurity {
 	public void encrypt(File in, File out) throws IOException, InvalidKeyException {
 		aesCipher.init(Cipher.ENCRYPT_MODE, aeskeySpec);
 		FileInputStream is = new FileInputStream(in);
-		System.out.println("Thank You Jesus");
+		//System.out.println("Thank You Jesus");
 		CipherOutputStream os = new CipherOutputStream(new FileOutputStream(out), aesCipher);
 		
 		copy(is, os);
@@ -110,7 +110,7 @@ public class ProxySecurity {
 		aesCipher.init(Cipher.ENCRYPT_MODE, aeskeySpec);
 		FileInputStream is = new FileInputStream(in);
 		ByteArrayOutputStream b = new ByteArrayOutputStream();
-		System.out.println("Thank You Jesus");
+		//System.out.println("Thank You Jesus");
 		CipherOutputStream os = new CipherOutputStream(b, aesCipher);
 		
 		copy(is, os);

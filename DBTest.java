@@ -43,7 +43,7 @@ public class DBTest {
 		
         try {
 			inputStream = new FileInputStream(inputFile);
-			System.out.println("Uploadeding ... ");
+			System.out.println("Uploading ... ");
             DbxEntry.File uploadedFile = client.uploadFile("/"+dst,
 														   DbxWriteMode.add(), inputFile.length(), inputStream);
             System.out.println("Uploaded: " + uploadedFile.toString());

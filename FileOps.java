@@ -135,13 +135,13 @@ class FileOps {
 		try {
 			System.out.println("Thank You Jesus");
 			System.out.println(text);
+			String[] names = new String[1];
 			
 			//ControlPacket cp = (ControlPacket) Base64Coder.fromString(text);
 			
 			//if ( cp.type == 1 ) {
-					String dlink = text;
-					dbproxy.DBDownloadLink(dlink+"?dl=1", "dlink.txt");
-					secproxy.decrypt(new File("dlink.txt"), new File("clean.txt"));
+					names[1] = text;
+					merge(names, "clean.txt");
 			//}
 		}
 		catch (Exception ex) {
