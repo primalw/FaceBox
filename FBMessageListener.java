@@ -7,7 +7,6 @@ import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.RosterEntry;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.packet.Message;
- 
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -43,12 +42,13 @@ public class FBMessageListener implements MessageListener, Runnable {
  
     public void processMessage(Chat chat, Message message) {
 		System.out.println();
-				
-		if ( friends == null ) {
-			sender.getFriends();
-		}
-		
 		MapIterator it = friends.mapIterator();
+				
+		if ( friends == null || !it.hasNext() ) {
+			sender.getFriends();
+			it = friends.mapIterator();
+		}		
+		
 		String key = null;
 		RosterEntry entry = null;
 	
