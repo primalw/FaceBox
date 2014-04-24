@@ -11,7 +11,7 @@ import javax.crypto.spec.*;
  */
 public class ProxySecurity {
 	
-	public static final int AES_Key_Size = 512;
+	public static final int AES_Key_Size = 256;
 	
 	Cipher pkCipher, aesCipher;
 	byte[] aesKey;
