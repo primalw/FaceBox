@@ -122,13 +122,11 @@ class FileOps {
 			names[i] = dbproxy.DBUploadShare("temp.txt", 
 											  Integer.toString(i)+".txt");
 											  
-			/*if ( 1 == 0 ) {
-				ControlPacket cp = new ControlPacket();
-				cp.type = rem;
-				cp.data = names[i];
-			}*/
+			//ControlPacket cp = new ControlPacket();
+			//cp.type = 1;
+			//cp.data = names[i];
 			
-			sender.sendMessage(names[i]+"-"+Integer.toString(rem));
+			sender.sendMessage(names[i]);
 			System.out.println(names[i]);
 		}
 		
@@ -158,20 +156,17 @@ class FileOps {
 		byte[] temp;
 		int rem = 0;
 		
-		//fileSize = 48;
-
+		fileSize = 48;
+		
+		fileQueue = new byte[fileSize];
 		
 		//nShards = len / FileOps.CHUNK_SIZE;
 		//nShards = ( len % FileOps.CHUNK_SIZE != 0 ) ? nShards + 1 : nShards + 0 ; 
 		//names = new String[nShards];
 		
 		for (int i = 0; i < nShards ; i++ ) {
-		
-			String data[] = names[0].split("-");
-			fileQueue = new byte[Integer.parseInt(data[1])];
-			fileSize = Integer.parseInt(data[1]);
 			
-			dbproxy.DBDownloadLink(data[0]+"?dl=1", "dlink.txt");
+			dbproxy.DBDownloadLink(names[i]+"?dl=1", "dlink.txt");
 			
 			temp = FileOps.toByte("dlink.txt");
 			rem = ( ( fileSize - len ) > FileOps.CHUNK_SIZE ) ? 
